@@ -9,7 +9,7 @@ use Moose::Util qw/ ensure_all_roles /;
 
 =head1 NAME
 
-Catalyst::Plugin::SpecialAction::Trail - Support for the 'trail' special action globally
+Catalyst::Plugin::SpecialAction::Trail - Support for the 'trail' special action
 
 =head1 VERSION
 
@@ -60,13 +60,24 @@ This is ALPHA SOFTWARE. Use at your own risk. Features may change.
 
 This module introduces a new special action C<trail> that unites the features
 of C<end> and C<auto> special actions (see L<Catalyst::Manual::Intro/"Built-in
-special actions">): Like C<end>, the C<trail> actions will be run at the end of
-the request, after all URL-matching actions are called; but they are called
-before any C<end> is run. Like C<auto>, multiple C<trail> actions will be run
-in turn, starting with the application class and going through to the most
-specific controller class, and the processing chain stops if any of them
-returns false (any remaining C<trail> actions are skipped and the control goes
-to C<end> if there's any).
+special actions">):
+
+=over
+
+=item *
+
+Like C<end>, the C<trail> actions will be run at the end of the request, after
+all URL-matching actions are called; but they are called before any C<end> is
+run.
+
+=item *
+
+Like C<auto>, multiple C<trail> actions will be run in turn, starting with the
+application class and going through to the most specific controller class, and
+the processing chain stops if any of them returns false (any remaining C<trail>
+actions are skipped and the control goes to C<end> if there's any).
+
+=back
 
 =head1 METHODS
 
