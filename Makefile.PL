@@ -15,7 +15,7 @@ all_from 'lib/Catalyst/Plugin/SpecialAction/Trail.pm';
 readme_from 'lib/Catalyst/Plugin/SpecialAction/Trail.pm' => 'clean';
 auto_set_repository;
 
-requires 'Catalyst'                   => '5.80022';
+requires 'Catalyst'                   => '5.80007';
 requires 'Moose'                      => '1.08';
 requires 'namespace::autoclean'       => '0.09';
 
