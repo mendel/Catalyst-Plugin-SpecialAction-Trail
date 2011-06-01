@@ -85,24 +85,31 @@ actions are skipped and the control goes to C<end> if there's any).
 
 =head2 setup_component
 
-Overridden (with an 'after' method modifier) from L<Catalyst/setup_component>.
+Overridden (with an 'around' method modifier) from L<Catalyst/setup_component>.
 Applies the L<Catalyst::TraitFor::Controller::SpecialAction::Trail> role to
-C<Catalyst::Controller>.
+the C<Catalyst::Controller> instance.
 
 =cut
 
-after setup_component => sub {
-  my ($class) = @_;
+around setup_component => sub {
+  my ($orig, $class) = (shift, shift, @_);
 
-  my $meta = Catalyst::Controller->meta;
-  my $immutable_options = $meta->is_immutable ? { $meta->immutable_options }
-                                              : undef;
+  my $component = $class->$orig(@_);
 
-  $meta->make_mutable if $immutable_options;
-  ensure_all_roles('Catalyst::Controller',
-    'Catalyst::TraitFor::Controller::SpecialAction::Trail');
+  if ($component->isa('Catalyst::Controller')) {
+    my $meta = $component->meta;
+    my $immutable_options = $meta->is_immutable ? { $meta->immutable_options }
+                                                : undef;
 
-  $meta->make_immutable(%$immutable_options) if $immutable_options;
+    $meta->make_mutable if $immutable_options;
+
+    ensure_all_roles($component,
+      'Catalyst::TraitFor::Controller::SpecialAction::Trail');
+
+    $meta->make_immutable(%$immutable_options) if $immutable_options;
+  }
+
+  return $component;
 };
 
 
