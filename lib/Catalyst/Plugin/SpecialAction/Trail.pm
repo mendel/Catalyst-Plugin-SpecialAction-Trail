@@ -97,16 +97,8 @@ around setup_component => sub {
   my $component = $class->$orig(@_);
 
   if ($component->isa('Catalyst::Controller')) {
-    my $meta = $component->meta;
-    my $immutable_options = $meta->is_immutable ? { $meta->immutable_options }
-                                                : undef;
-
-    $meta->make_mutable if $immutable_options;
-
     ensure_all_roles($component,
       'Catalyst::TraitFor::Controller::SpecialAction::Trail');
-
-    $meta->make_immutable(%$immutable_options) if $immutable_options;
   }
 
   return $component;
